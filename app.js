@@ -85,7 +85,16 @@
         const x=b.x+b.w-w;
         chip.style.left=pct(x,1024);chip.style.top=pct(b.y,1536);
         chip.style.width=pct(w,1024);chip.style.height=pct(b.h,1536);
-        chip.style.fontSize=(b.h*0.58/1024*100).toFixed(4)+'cqw';
+        // Match the visual height of the white price lettering in the approved menu image.
+        // Work in 1024px artwork coordinates; fit long amounts without clipping the blue badge.
+        const canvas=paintPrices.measureCanvas||(paintPrices.measureCanvas=document.createElement('canvas'));
+        const ctx=canvas.getContext('2d');
+        let size=b.h*0.82;
+        ctx.font=`800 ${size}px Arial`;
+        const available=Math.max(1,w-Math.max(6,b.h*0.27));
+        const needed=ctx.measureText(text).width;
+        if(needed>available)size*=available/needed;
+        chip.style.fontSize=(size/1024*100).toFixed(4)+'cqw';
         chip.textContent=text;chip.setAttribute('aria-label',item.name+': '+text);
         frame.appendChild(chip);
       });
