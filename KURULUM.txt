@@ -1,0 +1,42 @@
+FETİNİN YERİ – DİJİTAL MENÜ
+==========================
+
+1) DOSYAYI HEMEN DENE (YAYINA ÇIKMADAN)
+- ZIP dosyasını bilgisayarda aç/çıkart.
+- Klasördeki index.html dosyasını Chrome ile aç.
+- Yukarı/aşağı kaydır; ilk görselde kategori kartlarına bas; İletişim bölümünde telefon/konum/Instagram bağlantılarını dene.
+- admin.html dosyasını açınca Firebase kurulmamışsa 'Bu cihazda fiyatları dene' seçeneği çıkar. Burada fiyat değiştirmek YALNIZCA aynı tarayıcıyı etkiler ve müşteriye yayınlamaz.
+- Onaylı 10 PNG dosyası birebir korunmuştur. Fiyatın değiştiği satırda yeni HTML fiyat etiketi görüntünün üzerine gelir; ana görsel yeniden oluşturulmaz.
+
+2) HIZLICA WEB SİTESİNE YAYINLA – GITHUB PAGES
+- github.com'da yeni bir PUBLIC repo oluştur (ör. fetinin-yeri-menu).
+- Bu klasörün İÇİNDEKİ index.html, admin.html, assets klasörü vb. bütün dosyaları repo köküne yükle.
+- Repo > Settings > Pages > Deploy from branch > main /(root) > Save.
+- Ortaya çıkan github.io adresini müşterinin QR koduna bağla.
+- Görseller büyük olabilir. İlk yüklemede tamamlandığını kontrol et.
+
+3) İŞLETME SAHİBİNİN TELEFONUNDAN CANLI FİYAT GÜNCELLEME (EK KURULUM)
+Statik GitHub Pages tek başına ortak fiyat değişikliğini kaydedemez.
+Firebase Auth + Firestore gereklidir:
+(a) console.firebase.google.com > yeni proje oluştur.
+(b) Web uygulaması ekle (</>), verilen config içeriğini firebase-config.js dosyasına aşağıdaki biçimde yaz:
+    window.FETININ_FIREBASE_CONFIG = {
+      apiKey: "...", authDomain:"...", projectId:"...", appId:"...",
+      messagingSenderId:"..."
+    };
+(c) Firebase > Authentication > Sign-in method > Email/Password yöntemini etkinleştir.
+(d) Authentication > Users > Add user ile YALNIZCA bir işletme kullanıcısı oluştur. Bu kullanıcının UID'sini kopyala.
+(e) firebase-config.js içindeki window.FETININ_OWNER_UID değerine UID yaz.
+(f) Firestore Database oluştur (Production mode); firestore.rules dosyasındaki ISLETME_KULLANICISININ_UID_DEGERI yerini aynı UID ile değiştir ve kuralları Firestore > Rules alanında yayınla.
+(g) Authentication > Settings > Authorized domains'e github.io yayın alan adını (kendi alanının host adını) ekle.
+(h) Düzenlenen firebase-config.js dosyasını GitHub'a tekrar yükle; site yenilenince canlı mod açılacaktır.
+(i) İşletme sahibi telefonundan https://SENIN-ADRESIN.github.io/REPO-ADI/admin.html adresini açsın; e-posta ve şifresiyle giriş yapıp fiyatları Kaydet'e bassın.
+(j) index.html açan müşteriler Firebase dinleyicisi sayesinde kaydedilen fiyatları otomatik görecek.
+
+ÖNEMLİ GÜVENLİK:
+- firebase-config.js dosyasındaki web konfigürasyonu şifre değildir. Müşterilerin yazmasını engelleyen şey firestore.rules + Authentication UID kontrolüdür.
+- İşletme şifresini web dosyasına, GitHub reposuna veya source code'a YAZMA.
+- Yönetim ekranındaki DEMO fiyat değişiklikleri farklı cihazlarda görünmez. Firebase yapılandırılmadan 'çalışan online fiyat yönetimi' olduğu iddia edilmemelidir.
+- İlk QR kodumuzu Google Maps bağlantısından yeniden ürettik: https://www.google.com/maps?cid=3311674621060252201
+- Instagram profil URL'si mevcut eski menüde görülen /fetininyeri/ olarak ayarlandı; yayına çıkmadan işletmeyle hesabın gerçek kullanıcı adını kesin olarak teyit et.
+- Matbaa için hazırlanan yüksek çözünürlüklü dosyalar ile dijital menü farklıdır: bu pakette görseller ekran gösterimine yöneliktir.

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#112c68">
+  <meta name="description" content="Fetinin Yeri Kemeraltı – dijital menü, güncel fiyatlar ve iletişim">
+  <link rel="icon" href="assets/icon-192.png" type="image/png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>Fetinin Yeri | Dijital Menü</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="customer">
+  <nav class="floating-menu" aria-label="Menü sayfası kontrolü">
+    <button id="categories-button" class="nav-pill" type="button" aria-label="Kategorileri aç">☰ <span>Kategoriler</span></button>
+    <span id="page-counter" class="page-counter">1 / 12</span>
+  </nav>
+  <div id="category-drawer" class="drawer" hidden>
+    <div class="drawer-title"><b>Kategoriler</b><button id="close-drawer" type="button" aria-label="Kapat">✕</button></div>
+    <div id="category-links" class="category-links"></div>
+  </div>
+  <main id="menu-pages" class="pages" aria-label="Fetinin Yeri dijital menü"></main>
+  <footer class="bottom-controls">
+    <button id="prev" type="button" aria-label="Önceki sayfa">‹</button>
+    <span id="current-title">Hoş geldiniz</span>
+    <button id="next" type="button" aria-label="Sonraki sayfa">›</button>
+  </footer>
+  <dialog id="zoom-dialog" class="zoom-dialog">
+    <button id="close-zoom" class="zoom-close" type="button" aria-label="Büyütülmüş sayfayı kapat">✕ Kapat</button>
+    <div id="zoom-content"></div>
+  </dialog>
+  <script src="data.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
