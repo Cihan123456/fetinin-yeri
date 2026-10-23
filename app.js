@@ -85,17 +85,24 @@
         const x=b.x+b.w-w;
         chip.style.left=pct(x,1024);chip.style.top=pct(b.y,1536);
         chip.style.width=pct(w,1024);chip.style.height=pct(b.h,1536);
-        // Match the visual height of the white price lettering in the approved menu image.
-        // Work in 1024px artwork coordinates; fit long amounts without clipping the blue badge.
+        // Keep the same tall letter height as the original printed price.
+        // Fit price width horizontally only; never reduce letter height to make it fit.
+        const label=document.createElement('span');
+        const size=b.h*1.09;
+        label.textContent=text;
+        label.style.cssText='display:block;flex:none;white-space:nowrap;transform-origin:center center;';
+        label.style.fontSize=(size/1024*100).toFixed(4)+'cqw';
         const canvas=paintPrices.measureCanvas||(paintPrices.measureCanvas=document.createElement('canvas'));
         const ctx=canvas.getContext('2d');
-        let size=b.h*0.82;
         ctx.font=`800 ${size}px Arial`;
-        const available=Math.max(1,w-Math.max(6,b.h*0.27));
-        const needed=ctx.measureText(text).width;
-        if(needed>available)size*=available/needed;
-        chip.style.fontSize=(size/1024*100).toFixed(4)+'cqw';
-        chip.textContent=text;chip.setAttribute('aria-label',item.name+': '+text);
+        const available=Math.max(1,w-b.h*0.27);
+        const measured=ctx.measureText(text).width;
+        // Arial letter spacing -0.02em, same as the badge stylesheet.
+        const effective=Math.max(1,measured-text.length*size*0.02);
+        const scale=Math.min(1,available/effective);
+        label.style.transform=`scaleX(${scale.toFixed(4)})`;
+        chip.appendChild(label);
+        chip.setAttribute('aria-label',item.name+': '+text);
         frame.appendChild(chip);
       });
     });
